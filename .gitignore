@@ -62,3 +62,9 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+
+# Tag files
+tags*
+
+# Google services config file
+android/app/google-services.json
