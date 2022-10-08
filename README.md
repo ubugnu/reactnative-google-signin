@@ -1,5 +1,11 @@
 # Example App of Google Auth Signin using React Native and Firebase
 
+## How to use
+
+This repo contains a ready-to-use forlder, you can clone it and go directly to step "Run the Metro server..." below (after configuring your Firebase). Or you can follow step by step (recommended) to integrate it into an existing project.
+
+## Steps to reproduce the same
+
 - Generate a fresh React Native app (I use a Typescript template, you can use any template or no template at all),
   I highly recommand to choose a random app name for a reason I will explain in a later step:
 
@@ -56,7 +62,7 @@ npx react-native init App_972035 --template react-native-template-typescript
   > If you got this error, just repeat steps with another app name (following my advice... this time!)
 - Download the configuration file (`google-services.json`), then put it inside the `./android/app/` folder
 - Connect your android device
-- Start the Metro server:
+- Run the Metro server:
 
 ```bash
 npx react-native start
