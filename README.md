@@ -11,3 +11,22 @@ npx react-native init App_972035 --template react-native-template-typescript
   ```bash
   yarn add @react-native-firebase/app @react-native-firebase/auth @react-native-google-signin/google-signin
   ``
+- Modify some files:
+  - in `./android/build.gradle` add:
+    ```gradle
+    buildscript {
+      ext {
+        // ...
+        googlePlayServicesAuthVersion = "19.2.0"
+      }
+      dependencies {
+        // ...
+        classpath("com.google.gms:google-services:4.3.14")
+        // ...
+      }
+    }
+    ```
+  - in `./android/app/build.gradle` add this:
+    ```gradle
+    apply plugin: "com.google.gms.google-services" // sould be at the end of the file
+    ```
