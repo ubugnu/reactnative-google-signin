@@ -57,10 +57,88 @@ npx react-native init App_972035 --template react-native-template-typescript
 - Download the configuration file (`google-services.json`), then put it inside the `./android/app/` folder
 - Connect your android device
 - Start the Metro server:
+
 ```bash
 npx react-native start
 ```
+
 - On another terminal, run the build
+
 ```bash
 npx react-native run-android
+```
+
+### Test the app
+
+- Enable authentification using your Firebase console (you can use [this link](https://console.firebase.google.com/project/_/authentication/providers))
+- Ensure that the _Google sign-in provider_ is enabled.
+- Retrieve the `webClientId` from the `./android/app/google-services.json` file in `client -> oauth_client -> client_id`, choose the one with `client_type` equal to `3`
+- Open `App.jsx` (or `App.tsx`) for edition, and replace the content by the following (this is the Typescript version), replace `<WEB_CLIENT_ID>` by the `webClientId` you noted in the previous step:
+
+```tsx
+import React, {useState, useEffect} from 'react';
+import {View, Text} from 'react-native';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {Button} from 'react-native';
+
+async function onGoogleButtonPress() {
+  // Get the users ID token
+  const {idToken} = await GoogleSignin.signIn();
+
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  // Sign-in the user with the credential
+  return auth().signInWithCredential(googleCredential);
+}
+
+GoogleSignin.configure({
+  webClientId: '<WEB_CLIENT_ID>',
+});
+
+const App = () => {
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) {
+      setInitializing(false);
+    }
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) {
+    return null;
+  }
+
+  if (!user) {
+    return (
+      <View>
+        <Button
+          title="Google Sign-In"
+          onPress={() =>
+            onGoogleButtonPress().then(() => alert('Signed in with Google!'))
+          }
+        />
+      </View>
+    );
+  }
+
+  return (
+    <View>
+      <Text>Welcome {user.email}</Text>
+      <Button title="Google Sign-Out" onPress={() => auth().signOut()} />
+    </View>
+  );
+};
+
+export default App;
 ```
