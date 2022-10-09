@@ -17,8 +17,6 @@ This repo contains a ready-to-use forlder, you can clone it and go directly to s
 
   ```bash
   yarn add @react-native-firebase/app @react-native-firebase/auth @react-native-google-signin/google-signin
-  ``
-
   ```
 
 - Modify some files:
